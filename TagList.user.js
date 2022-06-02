@@ -4,8 +4,8 @@
 // @downloadURL  https://github.com/SOTagBurners/Userscripts/raw/master/TagList.user.js
 // @author       Will Sullivan (Will)
 // @developer    David Bingham (Mogsdad)
-// @maintainer   SOTagBurneres
-// @version      1.3.0
+// @maintainer   SOTagBurners
+// @version      1.3.1
 // @grant        none
 // @description  Adds an expandable list containing a link to every question on the current tag page.  Useful when you want to open many questions with the same tag at the same time.
 // @include      /^https?:\/\/(?:meta.)?(?:stackoverflow|stackexchange|serverfault|superuser|askubuntu|stackapps)\.com(?:\/(?:\?|questions(?:$|\/tagged|\?)|search|unanswered).*)?$/
@@ -43,7 +43,9 @@ function tagList() {
 
     // get all the hrefs
     App.root = App.linkytarget;
-    App.hrefs = App.root.find('.s-link[data-searchsession^="/"]');  // .result-link on searches, .question-hyperlink everywhere else
+    // This is currently only compatible with search; we can¨t hijack every s-link because not all of them lead to questions.
+    // However, as far as I know, this only leaves tag pages broken
+    App.hrefs = App.root.find('.s-link[data-searchsession^="/"],.answer-hyperlink');  // SE doesn't let us have nice things
     if (App.hrefs.length === 0) {
         console.log("No post hyperlinks found");
         return;
